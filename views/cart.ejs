@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+</head>
+<body class="sb-nav-fixed">
+<%- include('./partials/navbar') %>
+<div id="layoutSidenav">
+    <%- include('./partials/sidebar') %>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <h1 class="mt-4">Category</h1>
+                        </div>
+                        <div class="col-sm">
+                            <div class="mt-4">
+                                <% if(message.length > 0){%>
+                                    <div class="alert alert-success alert-dismissable">
+                                        <%= message%>
+                                    </div>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        DataTable
+                    </div>
+                    <div class="card-body">
+                        <table id="datatablesSimple">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ngày bán</th>
+                                <th>Nội dung</th>
+                                <th>Tên khách hàng</th>
+                                <th>Trạng thái</th>
+                                <th>Xử lý</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% Array.from(data).forEach((item) =>{%>
+                                <tr>
+                                    <td><%= item.MaHDB %></td>
+                                    <td><%= item.NgayBan.toISOString().slice(0, 10) %></td>
+                                    <td><%= item.Noidung %></td>
+                                    <td><%= item.TenKH %></td>
+                                    <td><%= item.KieuTT %></td>
+                                    <td><% if (item.MaTT != 3){%>
+                                            <a id="todolink" href="" data-target='#cartModal' data-toggle="modal" data-todo='{"MaHDB":"<%= item.MaHDB %>","NgayBan":"<%= item.NgayBan.toISOString().slice(0, 10) %>","Noidung":"<%= item.Noidung %>","TenKH":"<%= item.TenKH %>","MaTT":"<%= item.MaTT %>"}'>Thay đổi</a>
+                                        <%}%>
+                                    </td>
+                                </tr>
+                            <%})%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="cartModal">
+                <div class="modal-dialog modal-dialog-centered modal-login" role="document">
+                    <div class="modal-content">
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Thay đổi trạng thái đơn hàng</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <form action="cart/edit" method="POST">
+                                <div class="form-group">
+                                    <label for="exampleFormControlInput1">Mã đơn hàng</label>
+                                    <input type="text" class="form-control" id="MaHDB" name="MaHDB" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlInput1">Ngày bán</label>
+                                    <input type="date" class="form-control" id="NgayBan" name="NgayBan" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlInput1">Nội dung</label>
+                                    <input type="text" class="form-control" id="Noidung" name="Noidung">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Tên khách hàng</label>
+                                    <input type="text" class="form-control" id="TenKH" name="TenKH" readonly>
+                                </div>
+                                <br>
+                                <select class="MaTT form-select" id="MaTT" name="MaTT">
+                                    <% Array.from(trangthai).forEach((item) => {%>
+                                        <option value="<%= item.MaTT%>"><%= item.KieuTT%></option>
+                                    <%})%>
+                                </select>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <%- include('./partials/footer') %>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="assets/demo/chart-area-demo.js"></script>
+<script src="assets/demo/chart-bar-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="js/datatables-simple-demo.js"></script>
+</body>
+</html>
